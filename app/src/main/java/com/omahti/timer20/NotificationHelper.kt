@@ -6,6 +6,8 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import java.text.SimpleDateFormat
+import java.util.*
 
 object NotificationHelper {
 
@@ -31,14 +33,35 @@ object NotificationHelper {
         }
     }
 
-    fun sendNotification(context: Context) {
+    fun sendFinishTimerNotification(context: Context) {
         createNotificationChannel(context)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
-            .setContentTitle("20 menit")
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText("Segera tinggalkan tempatmu dan tetap jaga protokol kesehatan"))
+            .setContentTitle("20 menit selesai")
+            .setAutoCancel(true)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText("Segera tinggalkan tempatmu dan tetap jaga protokol kesehatan")
+            )
+
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
+    }
+
+    fun sendStartTimerNotification(context: Context) {
+        createNotificationChannel(context)
+
+        val time = System.currentTimeMillis() + (1000 * 60 * 20)
+        val date = Date(time)
+        val simpleDateFormat = SimpleDateFormat("HH:mm")
+
+
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_baseline_timer_24)
+            .setContentTitle("Timer telah dijalankan")
+            .setContentText(
+                "Waktu berakhir pada pukul ${simpleDateFormat.format(date)}"
+            )
 
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }

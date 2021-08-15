@@ -24,16 +24,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                NotificationHelper.sendNotification(this@MainActivity)
+                NotificationHelper.sendFinishTimerNotification(this@MainActivity)
                 btnStartTimer.isEnabled = true
             }
-
         }
 
         btnStartTimer.setOnClickListener {
             timer.start()
+            NotificationHelper.sendStartTimerNotification(this@MainActivity)
             btnStartTimer.isEnabled = false
         }
+
         btnResetTimer.setOnClickListener {
             timer.cancel()
             textTimer.text = "20:00"
