@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -20,21 +19,25 @@ class MainActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / (1000 * 60)
                 val seconds = (millisUntilFinished / 1000) % 60
-                textTimer.text = minutes.toString() + ":" + seconds.toString()
+                textTimer.text =
+                    String.format("%02d", minutes) + ":" + String.format("%02d", seconds)
             }
 
             override fun onFinish() {
-                // show notification
+                NotificationHelper.sendNotification(this@MainActivity)
+                btnStartTimer.isEnabled = true
             }
 
         }
 
         btnStartTimer.setOnClickListener {
             timer.start()
+            btnStartTimer.isEnabled = false
         }
         btnResetTimer.setOnClickListener {
             timer.cancel()
             textTimer.text = "20:00"
+            btnStartTimer.isEnabled = true
         }
     }
 }
